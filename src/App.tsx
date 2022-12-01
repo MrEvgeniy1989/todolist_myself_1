@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
+import {Сounter} from './components/Сounter/Сounter';
 
 function App() {
+    let [value, setValue] = useState<string>("0")
+    let [initialValue, setInitialValue] = useState<string>("0")
+    let [finalValue, setFinalValue] = useState<string>("10")
+
     return (
         <div className="App">
             <div>
@@ -20,6 +25,16 @@ function App() {
                     <button>Active</button>
                     <button>Completed</button>
                 </div>
+            </div>
+            <div>
+                <Сounter
+                    value={value}
+                    setValue={setValue}
+                    initialValue={initialValue}
+                    setInitialValue={setInitialValue}
+                    finalValue={finalValue}
+                    setFinalValue={setFinalValue}
+                />
             </div>
         </div>
     );
