@@ -2,41 +2,47 @@ import React, {ChangeEvent, useState} from 'react';
 import s from './Сounter.module.css'
 
 export type CounterPropsType = {
-    value: string
-    setValue: (value: string) => void
-    initialValue: string
-    setInitialValue: (initialValue: string) => void
-    finalValue: string
-    setFinalValue: (finalValue: string) => void
+    value: number
+    setValue: (value: number) => void
+    initialValue: number
+    setInitialValue: (initialValue: number) => void
+    finalValue: number
+    setFinalValue: (finalValue: number) => void
 }
 
 export const Сounter: React.FC<CounterPropsType> = (props) => {
     let {value, setValue, initialValue, setInitialValue, finalValue, setFinalValue, ...otherProps} = props
 
     const onClickHandler = () => {
-        if (+value >= +initialValue && +value < +finalValue) {
-            return setValue(`${+value + 1}`)
+        if (value >= +initialValue && value < +finalValue) {
+            return setValue(value + 1)
         } else {
             alert('Расчет окончен')
-            setValue(initialValue)
+            setValue(+initialValue)
         }
     }
 
     const InitialValueOnChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
-        setInitialValue(e.currentTarget.value)
-        setValue(e.currentTarget.value)
+        setInitialValue(+e.currentTarget.value)
+        setValue(+e.currentTarget.value)
     }
 
     const FinalValueOnChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
-        setFinalValue(e.currentTarget.value)
+        setFinalValue(+e.currentTarget.value)
     }
 
     return (
-        <div>
-            <p>Стартовое значение</p>
-            <input value={initialValue} onChange={InitialValueOnChangeHandler}/>
-            <p>Финальное значение</p>
-            <input value={finalValue}  onChange={FinalValueOnChangeHandler}/>
+        <div className={s.counterAll}>
+
+            <div className={s.field}>
+                <label htmlFor={'number'}>Стартовое значение: </label>
+                <input type={'number'} value={initialValue} onChange={InitialValueOnChangeHandler}/>
+            </div>
+            <div className={s.field}>
+                <label htmlFor={'number'}>Финальное значение: </label>
+                <input type={'number'} value={finalValue} onChange={FinalValueOnChangeHandler}/>
+            </div>
+
             <div className={s.counter} onClick={onClickHandler}>
                 {value}
             </div>
