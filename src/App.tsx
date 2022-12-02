@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Сounter} from './components/Сounter/Сounter';
+import {Counter} from './components/Сounter/Сounter';
 
 function App() {
     let [value, setValue] = useState<number>(0)
@@ -27,7 +27,7 @@ function App() {
             {/*    </div>*/}
             {/*</div>*/}
             <div>
-                <Сounter
+                <Counter
                     value={value}
                     setValue={setValue}
                     initialValue={initialValue}

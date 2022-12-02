@@ -10,41 +10,46 @@ export type CounterPropsType = {
     setFinalValue: (finalValue: number) => void
 }
 
-export const Сounter: React.FC<CounterPropsType> = (props) => {
+export const Counter: React.FC<CounterPropsType> = (props) => {
     let {value, setValue, initialValue, setInitialValue, finalValue, setFinalValue, ...otherProps} = props
 
+
     const onClickHandler = () => {
-        if (value >= +initialValue && value < +finalValue) {
+
+        if (value >= initialValue && value < finalValue) {
             return setValue(value + 1)
         } else {
             alert('Расчет окончен')
-            setValue(+initialValue)
+            setValue(initialValue)
         }
     }
 
     const InitialValueOnChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
-        setInitialValue(+e.currentTarget.value)
-        setValue(+e.currentTarget.value)
+        setInitialValue(+e.currentTarget.value.trim())
+        setValue(+e.currentTarget.value.trim())
     }
 
     const FinalValueOnChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {
-        setFinalValue(+e.currentTarget.value)
+        setFinalValue(+e.currentTarget.value.trim())
     }
 
+
     return (
-        <div className={s.counterAll}>
+        <div className={s.parent}>
+            <div className={s.counterAll}>
 
-            <div className={s.field}>
-                <label htmlFor={'number'}>Стартовое значение: </label>
-                <input type={'number'} value={initialValue} onChange={InitialValueOnChangeHandler}/>
-            </div>
-            <div className={s.field}>
-                <label htmlFor={'number'}>Финальное значение: </label>
-                <input type={'number'} value={finalValue} onChange={FinalValueOnChangeHandler}/>
-            </div>
+                <div className={s.field}>
+                    <label htmlFor={'number'}>Стартовое значение: </label>
+                    <input className={s.inputDefault} type={'number'} value={initialValue} onChange={InitialValueOnChangeHandler}/>
+                </div>
+                <div className={s.field}>
+                    <label htmlFor={'number'}>Финальное значение: </label>
+                    <input className={s.inputDefault} type={'number'} value={finalValue} onChange={FinalValueOnChangeHandler}/>
+                </div>
 
-            <div className={s.counter} onClick={onClickHandler}>
-                {value}
+                <div className={s.counter} onClick={onClickHandler}>
+                    {value}
+                </div>
             </div>
         </div>
 
