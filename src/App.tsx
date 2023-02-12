@@ -18,11 +18,6 @@ function App() {
         {id: v1(), title: 'rest api', isDone: false},
         {id: v1(), title: 'graphQL', isDone: false}
     ])
-    /*    const tasks2: TaskType[] = [
-            {id: v1(), title: 'Молоко', isDone: true},
-            {id: v1(), title: 'Сок', isDone: true},
-            {id: v1(), title: 'Пиво', isDone: false}
-        ]*/
     const [filter, setFilter] = useState<FilterType>('all')
 
 
@@ -34,15 +29,20 @@ function App() {
     }
 
 
-    const removeTask = (taskId: string) => {
-        setTasks(tasks.filter(task => task.id !== taskId))
-    }
     const changeFilter = (filterValue: FilterType) => {
         setFilter(filterValue)
+    }
+    const removeTask = (taskId: string) => {
+        setTasks(tasks.filter(task => task.id !== taskId))
     }
     const addTask = (titleForNewTask: string) => {
         const task = {id: v1(), title: titleForNewTask, isDone: false}
         setTasks([task, ...tasks])
+    }
+    const changeTaskStatus = (taskId: string, isDoneNewStatus: boolean) => {
+      setTasks(tasks.map(task => task.id === taskId
+          ? {...task, isDone: isDoneNewStatus}
+          : task))
     }
 
 
@@ -51,11 +51,12 @@ function App() {
             <Todolist
                 title={'Технологии'}
                 tasks={tasks}
+                filter={filter}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
             />
-            {/*<Todolist title={'Напитки'} tasks={tasks2}/>*/}
         </div>
     );
 }
