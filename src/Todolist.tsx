@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Delete from '@mui/icons-material/Delete';
 import Checkbox from '@mui/material/Checkbox';
+import {AlertDialog} from './AlertDialog';
 
 export type TodolistPropsType = {
     id: string
@@ -36,14 +37,15 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         <div>
             <h3>
                 <EditableSpan title={props.title} callback={changeTodolistTitle}/>
-                <IconButton onClick={removeTodolistHandler} aria-label="delete">
+                {/*<IconButton onClick={removeTodolistHandler} aria-label="delete">
                     <Delete/>
-                </IconButton>
+                </IconButton>*/}
+                <AlertDialog callback={removeTodolistHandler} dialogTitle={'этот список задач'}/>
             </h3>
 
-            <AddItemForm callback={addTask}/>
+            <AddItemForm callback={addTask} label={'Новая задача...'}/>
 
-            <ul>
+            <ul style={{marginLeft: '0', paddingLeft: '0'}}>
                 {props.tasks.map(task => {
                     const onClickHandler = () => props.removeTask(props.id, task.id)
                     const onChangeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -54,21 +56,33 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                     }
 
                     return (
-                        <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                            <Checkbox
-                                checked={task.isDone}
-                                onChange={onChangeTaskStatusHandler}
-                                color={'primary'}
-                            />
+                        <li key={task.id}
+                            className={task.isDone ? 'is-done' : ''}
+                            style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            listStyleType: 'none',
+                            marginLeft: '0',
+                            paddingLeft: '0'
+                        }}>
+                            <div style={{flex: '1'}}>
+                                <Checkbox
+                                    checked={task.isDone}
+                                    onChange={onChangeTaskStatusHandler}
+                                    color={'primary'}
+                                />
 
-                            <EditableSpan
-                                title={task.title}
-                                callback={changeTaskTitle}
-                            />
+                                <EditableSpan
+                                    title={task.title}
+                                    callback={changeTaskTitle}
+                                />
+                            </div>
 
-                            <IconButton onClick={onClickHandler} aria-label="delete">
+                            {/*<IconButton onClick={onClickHandler} aria-label="delete">
                                 <Delete/>
-                            </IconButton>
+                            </IconButton>*/}
+                            <AlertDialog callback={onClickHandler} dialogTitle={'эту задачу'}/>
                         </li>
                     )
                 })}
@@ -95,3 +109,5 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
         </div>
     )
 }
+
+

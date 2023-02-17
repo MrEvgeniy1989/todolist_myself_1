@@ -4,6 +4,7 @@ import AddCircle from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
+    label: string
     callback: (newTitle: string) => void
 }
 export const AddItemForm = (props: AddItemFormPropsType) => {
@@ -36,7 +37,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
                 onKeyDown={onKeyDownInputHandler}
                 variant={'outlined'}
                 error={!!error}
-                label={'Новое задание...'}
+                label={props.label}
                 helperText={error}
             />
             <IconButton onClick={addTaskHandler}>
