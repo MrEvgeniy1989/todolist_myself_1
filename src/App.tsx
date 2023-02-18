@@ -17,8 +17,8 @@ import Paper from '@mui/material/Paper';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {useTheme, ThemeProvider, createTheme} from '@mui/material/styles';
-import {Box} from '@mui/material';
-import {string} from 'prop-types';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Box from '@mui/material/Box';
 
 export type TodolistType = {
     id: string
@@ -52,7 +52,7 @@ export function App() {
         initialTodolists = JSON.parse(valueStringTodolists)
     } else initialTodolists = [
         {id: todolistId1, title: 'Технологии', filter: 'all'},
-        {id: todolistId2, title: 'Что купить', filter: 'all'}
+        /*{id: todolistId2, title: 'Что купить', filter: 'all'}*/
     ]
 
     let valueStringTasks = localStorage.getItem('tasks')
@@ -66,13 +66,13 @@ export function App() {
             {id: v1(), title: 'rest api', isDone: false},
             {id: v1(), title: 'graphQL', isDone: false}
         ],
-        [todolistId2]: [
+        /*[todolistId2]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
             {id: v1(), title: 'ReactJS', isDone: false},
             {id: v1(), title: 'rest api', isDone: false},
             {id: v1(), title: 'graphQL', isDone: false}
-        ]
+        ]*/
     }
 
     let [todolists, setTodolists] = useState<TodolistType[]>(initialTodolists)
@@ -228,7 +228,20 @@ export function App() {
 }
 
 export default function ToggleColorMode() {
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    let initialMode: 'light' | 'dark' = prefersDarkMode ? 'dark' : 'light'
+
+    let valueStringMode = localStorage.getItem('mode')
+    if (valueStringMode) {
+        initialMode = JSON.parse(valueStringMode)
+    }
+
+    const [mode, setMode] = React.useState<'light' | 'dark'>(initialMode);
+
+    useEffect(() => {
+        localStorage.setItem('mode', JSON.stringify(mode))
+    }, [mode])
+
     const colorMode = React.useMemo(
         () => ({
             toggleColorMode: () => {

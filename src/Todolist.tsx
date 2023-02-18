@@ -79,10 +79,10 @@ export const Todolist: FC<TodolistPropsType> = (props) => {
                                 />
                             </div>
 
-                            {/*<IconButton onClick={onClickHandler} aria-label="delete">
+                            <IconButton onClick={onClickHandler} aria-label="delete">
                                 <Delete/>
-                            </IconButton>*/}
-                            <AlertDialog callback={onClickHandler} dialogTitle={'эту задачу'}/>
+                            </IconButton>
+                            {/*<AlertDialog callback={onClickHandler} dialogTitle={'эту задачу'}/>*/}
                         </li>
                     )
                 })}
