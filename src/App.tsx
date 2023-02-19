@@ -8,17 +8,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import {useTheme, ThemeProvider, createTheme} from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import {ColorModeContext} from './ToggleColorMode';
 
 export type TodolistType = {
     id: string
@@ -35,67 +32,36 @@ export type TasksStateType = {
 }
 export type FilterType = 'all' | 'active' | 'completed'
 
-const ColorModeContext = React.createContext({toggleColorMode: () => {}});
-
 export function App() {
     const theme = useTheme();
     const colorMode = React.useContext(ColorModeContext);
 
     const todolistId1 = v1()
-    const todolistId2 = v1()
 
-    let initialTodolists
-    let initialTasks
-
-    let valueStringTodolists = localStorage.getItem('todolists')
-    if (valueStringTodolists) {
-        initialTodolists = JSON.parse(valueStringTodolists)
-    } else initialTodolists = [
+    let initialTodolists = [
         {id: todolistId1, title: 'Технологии', filter: 'all'},
-        /*{id: todolistId2, title: 'Что купить', filter: 'all'}*/
     ]
 
-    let valueStringTasks = localStorage.getItem('tasks')
-    if (valueStringTasks) {
-        initialTasks = JSON.parse(valueStringTasks)
-    } else initialTasks = {
+    let initialTasks = {
         [todolistId1]: [
             {id: v1(), title: 'HTML&CSS', isDone: true},
             {id: v1(), title: 'JS', isDone: true},
             {id: v1(), title: 'ReactJS', isDone: false},
             {id: v1(), title: 'rest api', isDone: false},
             {id: v1(), title: 'graphQL', isDone: false}
-        ],
-        /*[todolistId2]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-            {id: v1(), title: 'rest api', isDone: false},
-            {id: v1(), title: 'graphQL', isDone: false}
-        ]*/
+        ]
     }
 
-    let [todolists, setTodolists] = useState<TodolistType[]>(initialTodolists)
-    let [tasks, setTasks] = useState<TasksStateType>(initialTasks)
+    const getData = (value: string | null) => {
+        if (value) {
+            return JSON.parse(value)
+        } else {
+            return null
+        }
+    }
 
-    // useEffect(() => {
-    //     let valueStringTodolists = localStorage.getItem('todolists')
-    //     if (valueStringTodolists) {
-    //         initislTodolists = JSON.parse(valueStringTodolists)
-    //     }
-    //
-    //     let valueStringTasks = localStorage.getItem('tasks')
-    //     if (valueStringTasks) {
-    //         initislTasks = JSON.parse(valueStringTasks)
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     let valueStringTasks = localStorage.getItem('tasks')
-    //     if (valueStringTasks) {
-    //         setTodolists(JSON.parse(valueStringTasks))
-    //     }
-    // })
+    let [todolists, setTodolists] = useState<TodolistType[]>(getData(localStorage.getItem('todolists')) || initialTodolists)
+    let [tasks, setTasks] = useState<TasksStateType>(getData(localStorage.getItem('tasks')) || initialTasks)
 
     useEffect(() => {
         localStorage.setItem('todolists', JSON.stringify(todolists))
@@ -107,8 +73,6 @@ export function App() {
         setTodolists(todolists.map(todolist => todolist.id === todolistId
             ? {...todolist, filter: filterValue}
             : todolist))
-        // localStorage.setItem('todolists', JSON.stringify(todolists))
-        // localStorage.setItem('tasks', JSON.stringify(tasks))
     }
     const removeTask = (todolistId: string, taskId: string) => {
         tasks[todolistId] = tasks[todolistId].filter(task => task.id !== taskId)
@@ -227,39 +191,3 @@ export function App() {
     );
 }
 
-export default function ToggleColorMode() {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    let initialMode: 'light' | 'dark' = prefersDarkMode ? 'dark' : 'light'
-
-    let valueStringMode = localStorage.getItem('mode')
-    if (valueStringMode) {
-        initialMode = JSON.parse(valueStringMode)
-    }
-
-    const [mode, setMode] = React.useState<'light' | 'dark'>(initialMode);
-
-    useEffect(() => {
-        localStorage.setItem('mode', JSON.stringify(mode))
-    }, [mode])
-
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-            },
-        }),
-        [],
-    );
-
-    const theme = React.useMemo(() => createTheme({palette: {mode},}),
-        [mode],
-    );
-
-    return (
-        <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-                <App/>
-            </ThemeProvider>
-        </ColorModeContext.Provider>
-    );
-}
