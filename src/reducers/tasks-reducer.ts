@@ -1,6 +1,7 @@
 import {TasksStateType, TodolistType} from '../App';
 import {v1} from 'uuid';
 import {addTodolistAC, removeTodolistAC} from './todolists_reducer';
+import {todolistId1} from '../AppWithRedux';
 
 type ActionType =
     | ReturnType<typeof addTaskAC>
@@ -10,7 +11,25 @@ type ActionType =
     | ReturnType<typeof addTodolistAC>
     | ReturnType<typeof removeTodolistAC>
 
-export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+const getData = (value: string | null) => {
+    if (value) {
+        return JSON.parse(value)
+    } else {
+        return null
+    }
+}
+
+const initialState: TasksStateType = getData(localStorage.getItem('tasks')) || {
+    [todolistId1]: [
+        {id: v1(), title: 'HTML&CSS', isDone: true},
+        {id: v1(), title: 'JS', isDone: true},
+        {id: v1(), title: 'ReactJS', isDone: false},
+        {id: v1(), title: 'rest api', isDone: false},
+        {id: v1(), title: 'graphQL', isDone: false}
+    ]
+}
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case 'ADD-TASK': {
             const copyState = {...state}
@@ -47,7 +66,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
             return {...copyState}
         }
         default: {
-            return {...state}
+            return state
         }
     }
 }

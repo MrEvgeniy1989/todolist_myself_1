@@ -1,7 +1,9 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React, {useEffect} from 'react';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {App} from './App';
+import {AppWithRedux} from './AppWithRedux';
+import {store} from './state/store';
+import {Provider} from 'react-redux';
 
 export const ColorModeContext = React.createContext({toggleColorMode: () => {}});
 export function ToggleColorMode() {
@@ -38,7 +40,9 @@ export function ToggleColorMode() {
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
-                <App/>
+                <Provider store={store}>
+                <AppWithRedux/>
+                </Provider>
             </ThemeProvider>
         </ColorModeContext.Provider>
     );
