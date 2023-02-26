@@ -1,6 +1,5 @@
-import {FilterType, TodolistType} from '../App';
+import {FilterType, TodolistType, todolistId1} from '../AppWithRedux';
 import {v1} from 'uuid';
-import {todolistId1} from '../AppWithRedux';
 
 
 type ActionType =

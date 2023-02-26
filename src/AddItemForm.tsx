@@ -7,7 +7,7 @@ type AddItemFormPropsType = {
     label: string
     callback: (newTitle: string) => void
 }
-export const AddItemForm = (props: AddItemFormPropsType) => {
+export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     const [newTitle, setNewTitle] = useState<string>('')
     const [error, setError] = useState<null | string>(null)
 
@@ -15,7 +15,9 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         setNewTitle(event.currentTarget.value)
     }
     const onKeyDownInputHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
+        if (error !== null) {
+            setError(null)
+        }
         if (event.key === 'Enter') {
             addTaskHandler()
         }
@@ -45,4 +47,4 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
             </IconButton>
         </div>
     )
-}
+})

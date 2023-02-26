@@ -168,7 +168,7 @@ export function App() {
                                 <Grid item key={todolist.id}>
                                     <Paper style={{padding: '1px 30px 30px 30px'}} elevation={12}>
                                         <Todolist
-                                            id={todolist.id}
+                                            todolistId={todolist.id}
                                             title={todolist.title}
                                             tasks={tasksForTodolist}
                                             filter={todolist.filter}
