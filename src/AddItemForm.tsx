@@ -4,7 +4,7 @@ import AddCircle from '@mui/icons-material/AddCircle';
 import TextField from '@mui/material/TextField';
 
 type AddItemFormPropsType = {
-    label: string
+    label?: string
     callback: (newTitle: string) => void
 }
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
